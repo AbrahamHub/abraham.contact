@@ -14,8 +14,6 @@ function fetchData () {
         </div>`   
         document.getElementById("proyect").insertAdjacentHTML("afterbegin", html)  
     }).join("")
-    
     })
-
 }
 fetchData()

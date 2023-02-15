@@ -6,6 +6,9 @@ html {
 body {
   margin: 0;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 article,
 aside,
 details,
@@ -2004,6 +2007,24 @@ blockquote {
   padding-bottom: 4em;
 }
 
+#proyect{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+  grid-gap: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.user{
+  border-radius: 0.8rem;
+  box-shadow: 0.05rem 1.1rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45);
+  padding-bottom: 1rem;
+}
+.user h3{
+  font-size: 160%;
+}
+.user img{
+  border-radius: 0.8rem 0.87rem 0rem 0rem
+}
 .container.featured-container {
   position: relative;
   z-index: 1;
@@ -3275,6 +3296,78 @@ blockquote {
 .yellow-text {
   color: #c3e88d;
 }
+.its-div{
+  display: inline-flex;
+}
+.center-body {
+  margin-top: 15px;
+  margin-right: 10px;
+  padding: 0;
+}
+.loader-square-15 {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.loader-square-15 > div {
+  height: 10px;
+  width: 10px;
+  background: #fff;
+  animation-name: anm-sq-15-flash;
+  animation-duration: 0.8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.loader-square-15 > div:nth-child(1) {
+  animation-delay: 0s;
+}
+.loader-square-15 > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loader-square-15 > div:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.loader-square-15 > div:nth-child(4) {
+  animation-delay: 0.4s;
+}
+@keyframes anm-sq-15-flash {
+  0% {
+      background: white;
+  }
+  1% {
+      background: var(--color);
+  }
+  51% {
+      background: white;
+  }
+}
+.line-1{
+  border-right: 2px solid rgba(255,255,255,.75);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  transform: translateY(-50%);  
+}
+
+/* Animation */
+.anim-typewriter{
+animation: typewriter 4s steps(30) 1s 1 normal both,
+           blinkTextCursor 500ms steps(30) 15 normal;
+}
+@keyframes typewriter{
+from{width: 0;}
+to{width: 108%;}
+}
+@keyframes blinkTextCursor{
+from{border-right-color: rgba(255,255,255,.75);}
+to{border-right-color: transparent;}
+}
+@keyframes endBlink{
+  from{border-right-color: rgba(255,255,255,.75);}
+  to{border-right-color: transparent;}
+  }
 
 .yellow-title {
   color: #ffd660;
@@ -4407,6 +4500,7 @@ blockquote {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+  margin-bottom: 1.5em;
 }
 
 .hero-animation-text-container {
@@ -4935,12 +5029,6 @@ blockquote {
   color: #011627;
   font-size: 50px;
   font-weight: 600;
-}
-
-.featured-work-header {
-  padding-right: 70px;
-  padding-bottom: 280px;
-  padding-left: 70px;
 }
 
 .section-top-fade {
