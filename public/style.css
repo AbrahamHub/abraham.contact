@@ -6729,4 +6729,13 @@ input[type="text"], input[type="email"] {
   .card p{
     font-size: 10px;
   }
+  .social-icons{
+    justify-content: center;
+    float: none;
+    gap: 10px;
+  }
+  .footer-flex-container{
+    justify-content: center;
+    margin-bottom: 20px;
+  }
 }
