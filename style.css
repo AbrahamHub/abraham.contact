@@ -6676,7 +6676,31 @@ to{border-right-color: transparent;}
   background-color: #00ca4e;
   box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.280);
 }
-#cards{
-  display: inline-flex;
-  gap: 20px;
+#Cards{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+}
+#formulario {
+  margin: 50px auto;
+  padding: 20px;
+  max-width: 500px;
+  background-color: rgb(25, 25, 25);
+  border-radius: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 25px;
+}
+
+input[type="text"], input[type="email"] {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 20px;
+  width: 100%;
+  color: black;
 }

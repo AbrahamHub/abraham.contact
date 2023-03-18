@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Code+Pro:300,regular,500" media="all">
         <link href="style.css" rel="stylesheet" type="text/css" />
         <script src="dataProyect.js"></script>
-        <script src="infotechcards.js"></script>
     </head>
     <body>
         <div data-animation="default" class="navbar w-nav" data-easing2="ease" data-easing="ease" data-collapse="medium" role="banner" data-no-scroll="1" data-duration="500" data-doc-height="1">
@@ -328,10 +327,35 @@
                                 <a class="blog-content-holder w-inline-block">
                                     <h4>Stack Tecnológico</h4>
                                     <div class="blog-description-holder"><p class="grey-24-text">Especializado en tecnologías de la Web, sin dejar de aprender alguna otra cosita.🦑</p></div>
-                                    <div id="cards"></div>
-                                    <div class="button"><div>Ver mas</div></div>
+                                    <div id="Cards" ></div>
                                 </a>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container _4ems">
+            <div class="fade-in-move-on-scroll">
+                <div class="blog-list-wrapper w-dyn-list">
+                    <div role="list" class="blog-list w-dyn-items">
+                        <div role="listitem" class="blog-item-container w-dyn-item">                 
+                            <a class="blog-content-holder w-inline-block">
+                                <h4>Contacto</h4>
+                                <div id="formulario">
+                                    <form>
+                                      <label for="nombre">Nombre:</label>
+                                      <input type="text" id="nombre" name="nombre">                                  
+                                      <label for="email">Correo electrónico:</label>
+                                      <input type="email" id="email" name="email">
+                                      <div class="w-inline-block">                
+                                      <button class="button" id="enviar" type="submit">Enviar</button></div>
+                                    </form>
+                                  </div>
+                                  
+                                  <div class="button"> <img src="static/tech-icons/desc.png" alt=""> Descargar CV</div>
+                            </a>
+                             
                         </div>
                     </div>
                 </div>
@@ -357,6 +381,8 @@
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
             crossorigin="anonymous"
         ></script>
+        <script src="infotechcards.js"></script>
+        <script src="sendemail.js"></script>
         <script src="https://assets.website-files.com/6319f69c5ef0f35ae3db6df0/js/webflow.839cb55e1.js" type="text/javascript"></script>
     </body>
 </html>
