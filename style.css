@@ -2334,7 +2334,6 @@ blockquote {
 .footer-flex-container {
   display: -ms-grid;
   display: grid;
-  margin-bottom: 40px;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
@@ -3620,7 +3619,7 @@ to{border-right-color: transparent;}
 
 .grey-24-text {
   color: #b8b8b8;
-  font-size: 24px;
+  font-size: 1.5em;
 }
 
 .about-grid-image-holder {
@@ -5006,6 +5005,7 @@ to{border-right-color: transparent;}
 
 ._20px-paragraph {
   font-size: 20px;
+  text-align: justify;
 }
 
 .screen-forntend-image {
@@ -5818,7 +5818,7 @@ to{border-right-color: transparent;}
   }
 
   .grey-24-text {
-      font-size: 18px;
+      font-size: 1.5em;
   }
 
   .blog-content-holder {
@@ -6703,4 +6703,12 @@ input[type="text"], input[type="email"] {
   margin-bottom: 20px;
   width: 100%;
   color: black;
+}
+.social-icons{
+  display: flex;
+  float: right;
+  gap: 10px;
+}
+.social-icons img{
+  width: 40px;
 }

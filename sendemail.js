@@ -1,22 +1,26 @@
-const formulario = document.getElementById('formulario');
-const enviarBtn = document.getElementById('enviar');
+const formulario = document.querySelector("#formulario");
 
-formulario.addEventListener('submit', function(e) {
-  e.preventDefault(); // previene el envío del formulario
+formulario.addEventListener("submit", (e) => {
+  e.preventDefault(); // Evitar que el formulario se envíe por defecto
 
-  const nombre = document.getElementById('nombre').value;
-  const email = document.getElementById('email').value;
+  const name = document.querySelector("#nombre").value;
+  const email = document.querySelector("#email").value;
 
-  // Enviar los datos mediante una petición AJAX
-  const xhr = new XMLHttpRequest();
-  const url = 'https://emailresponceabraham.onrender.com/email';
-  xhr.open('POST', url, true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      console.log('Datos enviados correctamente');
-    }
+  // Crear objeto con los datos del formulario
+  const datosFormulario = {
+    name: name,
+    email: email
   };
-  const data = JSON.stringify({nombre: nombre, email: email});
-  xhr.send(data);
+
+  // Enviar los datos por fetch POST
+  fetch("https://emailresponceabraham.onrender.com/email", {
+    method: "POST",
+    body: JSON.stringify(datosFormulario),
+    headers: { 
+      "Content-Type": "application/json"
+    }
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error));
 });
