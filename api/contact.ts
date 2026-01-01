@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { MongoClient } from 'mongodb';
+import { sendContactEmail } from '../src/lib/emailService';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
 const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME || 'portfolio';
@@ -44,6 +45,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    // Enviar email de confirmación
+    await sendContactEmail({ name, email });
+
+    // Guardar en MongoDB
     const { db } = await connectToDatabase();
     const contactsCollection = db.collection('contacts');
 
@@ -55,7 +60,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       emailSent: true,
     });
 
-    return res.status(201).json({ success: true, message: 'Contact information received successfully' });
+    return res.status(201).json({
+      success: true,
+      message: 'Contact information received and email sent successfully',
+    });
   } catch (error) {
     console.error('API Error:', error);
     return res.status(500).json({
