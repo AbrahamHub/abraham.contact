@@ -55,7 +55,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     // Enviar email de confirmación (error => 500)
     try {
-      const { sendContactEmail } = await import('./_lib/emailService');
+      // Import con extensión .js para resolver en runtime ESM de Vercel
+      const { sendContactEmail } = await import('./_lib/emailService.js');
       await sendContactEmail({ name, email });
       emailSent = true;
     } catch (err) {
