@@ -50,15 +50,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   let emailSent = false;
   let emailError: string | null = null;
+  let emailErrorStack: string | null = null;
 
   try {
     // Enviar email de confirmación (error => 500)
     try {
-      const { sendContactEmail } = await import('../src/lib/emailService');
+      const { sendContactEmail } = await import('./_lib/emailService');
       await sendContactEmail({ name, email });
       emailSent = true;
     } catch (err) {
       emailError = err instanceof Error ? err.message : 'Unknown email error';
+      emailErrorStack = err instanceof Error && err.stack ? err.stack : null;
       console.error('Email send failed:', err);
       // Persist attempt result before returning error
     }
@@ -74,6 +76,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       status: emailSent ? 'sent' : 'email_failed',
       emailSent,
       emailError,
+      emailErrorStack,
     });
 
     if (!emailSent) {
