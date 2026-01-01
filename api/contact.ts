@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { MongoClient } from 'mongodb';
-import { sendContactEmail } from '../src/lib/emailService';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
 const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME || 'portfolio';
@@ -24,6 +23,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Content-Type', 'application/json');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -44,9 +44,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Invalid email format' });
   }
 
+  if (!MONGODB_URI) {
+    return res.status(500).json({ error: 'MONGODB_URI is not configured' });
+  }
+
+  let emailSent = false;
+  let emailError: string | null = null;
+
   try {
-    // Enviar email de confirmación
-    await sendContactEmail({ name, email });
+    // Enviar email de confirmación (si hay credenciales)
+    if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+      try {
+        const { sendContactEmail } = await import('../src/lib/emailService');
+        await sendContactEmail({ name, email });
+        emailSent = true;
+      } catch (err) {
+        emailError = err instanceof Error ? err.message : 'Unknown email error';
+        console.error('Email send failed:', err);
+      }
+    } else {
+      emailError = 'Email service not configured';
+      console.warn('Email skipped: missing GMAIL_USER or GMAIL_APP_PASSWORD');
+    }
 
     // Guardar en MongoDB
     const { db } = await connectToDatabase();
@@ -56,13 +75,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       name,
       email,
       timestamp: new Date(),
-      status: 'sent',
-      emailSent: true,
+      status: emailSent ? 'sent' : 'email_failed',
+      emailSent,
+      emailError,
     });
 
-    return res.status(201).json({
+    return res.status(emailSent ? 201 : 202).json({
       success: true,
-      message: 'Contact information received and email sent successfully',
+      emailSent,
+      emailError,
+      message: emailSent
+        ? 'Contact information received and email sent successfully'
+        : 'Contact saved, but email could not be sent',
     });
   } catch (error) {
     console.error('API Error:', error);
