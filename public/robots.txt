@@ -1,0 +1,22 @@
+# robots.txt for Abraham Castañeda Portfolio
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /login
+Disallow: /api/
+
+# Specific Bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.abraham.com.mx/sitemap.xml

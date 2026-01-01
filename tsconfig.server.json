@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "./dist",
+    "rootDir": ".",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": false
+  },
+  "include": ["server.ts", "src/lib/mongodb.ts", "src/lib/contentAPI.ts"],
+  "exclude": ["node_modules", "dist", "src/components", "src/pages", "src/hooks"]
+}
