@@ -1,22 +1,31 @@
 import nodemailer from 'nodemailer';
+import fs from 'fs';
+import path from 'path';
 
-// Configurar el transportador de nodemailer con Gmail
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
-
-// Verificar la configuración del transportador
-transporter.verify((error, success) => {
-  if (error) {
-    console.error('❌ Error al configurar el servicio de email:', error);
-  } else {
-    console.log('✅ Servicio de email listo para enviar mensajes');
+function getTransporter() {
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+    throw new Error('Email service not configured (missing GMAIL_USER or GMAIL_APP_PASSWORD)');
   }
-});
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  });
+
+  // Verificar configuración en frío solo una vez por invocación
+  transporter.verify((error) => {
+    if (error) {
+      console.error('❌ Error al configurar el servicio de email:', error);
+    } else {
+      console.log('✅ Servicio de email listo para enviar mensajes');
+    }
+  });
+
+  return transporter;
+}
 
 export interface ContactEmailData {
   name: string;
@@ -25,9 +34,13 @@ export interface ContactEmailData {
 
 export async function sendContactEmail(data: ContactEmailData): Promise<void> {
   const { name, email } = data;
+  const transporter = getTransporter();
   
   console.log('📧 Enviando email a:', email);
   console.log('📧 Desde:', process.env.GMAIL_USER);
+
+  const resumePath = path.join(process.cwd(), 'public', 'documents', 'CV-ABRAHAM_CASTAÑEDA.pdf');
+  const hasResume = fs.existsSync(resumePath);
   
   // Email de confirmación que se envía al usuario que llenó el formulario
   const mailOptions = {
@@ -102,12 +115,14 @@ export async function sendContactEmail(data: ContactEmailData): Promise<void> {
         </div>
       </div>
     `,
-    attachments: [
-      {
-        filename: 'CV-ABRAHAM_CASTAÑEDA.pdf',
-        path: './public/documents/CV-ABRAHAM_CASTAÑEDA.pdf',
-      }
-    ]
+    attachments: hasResume
+      ? [
+          {
+            filename: 'CV-ABRAHAM_CASTAÑEDA.pdf',
+            path: resumePath,
+          },
+        ]
+      : undefined,
   };
 
   try {

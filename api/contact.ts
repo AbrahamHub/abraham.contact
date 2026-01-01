@@ -52,19 +52,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   let emailError: string | null = null;
 
   try {
-    // Enviar email de confirmación (si hay credenciales)
-    if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
-      try {
-        const { sendContactEmail } = await import('../src/lib/emailService');
-        await sendContactEmail({ name, email });
-        emailSent = true;
-      } catch (err) {
-        emailError = err instanceof Error ? err.message : 'Unknown email error';
-        console.error('Email send failed:', err);
-      }
-    } else {
-      emailError = 'Email service not configured';
-      console.warn('Email skipped: missing GMAIL_USER or GMAIL_APP_PASSWORD');
+    // Enviar email de confirmación (error => 500)
+    try {
+      const { sendContactEmail } = await import('../src/lib/emailService');
+      await sendContactEmail({ name, email });
+      emailSent = true;
+    } catch (err) {
+      emailError = err instanceof Error ? err.message : 'Unknown email error';
+      console.error('Email send failed:', err);
+      // Persist attempt result before returning error
     }
 
     // Guardar en MongoDB
@@ -80,13 +76,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       emailError,
     });
 
-    return res.status(emailSent ? 201 : 202).json({
+    if (!emailSent) {
+      return res.status(500).json({
+        success: false,
+        emailSent,
+        emailError,
+        message: 'Contact saved but email could not be sent',
+      });
+    }
+
+    return res.status(201).json({
       success: true,
       emailSent,
-      emailError,
-      message: emailSent
-        ? 'Contact information received and email sent successfully'
-        : 'Contact saved, but email could not be sent',
+      message: 'Contact information received and email sent successfully',
     });
   } catch (error) {
     console.error('API Error:', error);
